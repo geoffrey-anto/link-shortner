@@ -145,7 +145,7 @@ const Home: NextPage = () => {
             </span>
           </a>
           <div onClick={copyToClipboard} className="mt-2 cursor-pointer">
-            Copy Recent To Clipboard <ClipBoardSvg />
+            Copy Recent To Clipboard <ClipBoardSvg /> {""}
           </div>
         </div>
         <p className="absolute bottom-4 text-white">
