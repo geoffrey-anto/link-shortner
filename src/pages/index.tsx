@@ -1,11 +1,12 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { type FormEventHandler, useEffect, useState } from "react";
+import { type FormEventHandler, useEffect, useState, MouseEvent } from "react";
 import { toast, Toaster } from "react-hot-toast";
 import Button from "../UI/Button";
 import Input from "../UI/Input";
 import { trpc } from "../utils/trpc";
+import ClipBoardSvg from "../UI/ClipBoardSvg";
 
 // interface MutationError {
 //   code: string;
@@ -22,6 +23,8 @@ const Home: NextPage = () => {
     slug: "",
     url: "",
   });
+
+  const [recentSlug, setRecentSlug] = useState("");
 
   // const [slug, setSlug] = useState("");
 
@@ -43,6 +46,7 @@ const Home: NextPage = () => {
       });
       if (res.data) {
         toast.success(res.message);
+        setRecentSlug(data.slug);
         setData({
           slug: "",
           url: "",
@@ -51,6 +55,19 @@ const Home: NextPage = () => {
     } catch (e_) {
       toast.error("Please Enter Valid Url Or Slug");
     }
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(
+      `${process.env.NEXT_PUBLIC_SITE_URL}/api/${
+        recentSlug.length > 0
+          ? recentSlug
+          : data.slug.length > 0
+          ? data.slug
+          : "[slug]"
+      }`
+    );
+    toast.success("Copied to clipboard");
   };
 
   useEffect(() => {
@@ -67,7 +84,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Toaster />
-      <main className="flex min-h-screen flex-col items-center justify-evenly bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+      <main className="flex min-h-screen flex-col items-center justify-evenly bg-gradient-to-b from-[#2e026d] to-[#15162c] caret-rose-800">
         <h1 className="mb-10 text-4xl font-semibold text-white">
           Link Shortener
         </h1>
@@ -84,6 +101,8 @@ const Home: NextPage = () => {
               }));
             }}
             value={data.slug}
+            max={12}
+            min={6}
           />
           <Input
             placeholder="Url"
@@ -112,6 +131,29 @@ const Home: NextPage = () => {
             type="button"
           />
         </div> */}
+        <div className="text-center text-xs text-white">
+          To Visit Use{" "}
+          <a
+            href={`${process.env.NEXT_PUBLIC_SITE_URL}/api/${
+              data.slug.length === 0 ? " [Slug] " : data.slug
+            }`}
+          >
+            <span className="text-rose-400">
+              {`${process.env.NEXT_PUBLIC_SITE_URL}/api/${
+                data.slug.length === 0 ? " [Slug] " : data.slug
+              }`}
+            </span>
+          </a>
+          <div onClick={copyToClipboard} className="mt-2 cursor-pointer">
+            Copy Recent To Clipboard <ClipBoardSvg />
+          </div>
+        </div>
+        <p className="absolute bottom-4 text-white">
+          Made By Geoffrey{" | "}
+          <a href="https://github.com/Geoffrey-Anto/link-shortner">
+            {"Github"}
+          </a>
+        </p>
       </main>
     </>
   );

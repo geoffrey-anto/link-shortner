@@ -4,6 +4,8 @@ interface InputProps {
   placeholder: string;
   value: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  max?: number;
+  min?: number;
 }
 
 const Input: FC<InputProps> = (props) => {
@@ -11,6 +13,8 @@ const Input: FC<InputProps> = (props) => {
     <input
       {...props}
       value={props.value}
+      maxLength={props.max}
+      minLength={props.min}
       className="w-72 rounded-lg px-4 py-3 text-lg text-gray-700"
     />
   );
