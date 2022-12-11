@@ -1,21 +1,21 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { FormEvent, FormEventHandler, useEffect, useState } from "react";
+import { type FormEventHandler, useEffect, useState } from "react";
 import { toast, Toaster } from "react-hot-toast";
 import Button from "../UI/Button";
 import Input from "../UI/Input";
 import { trpc } from "../utils/trpc";
 
-interface MutationError {
-  code: string;
-  minimum: number;
-  type: string;
-  inclusive: boolean;
-  message: string;
-  path: string[];
-  validation: string;
-}
+// interface MutationError {
+//   code: string;
+//   minimum: number;
+//   type: string;
+//   inclusive: boolean;
+//   message: string;
+//   path: string[];
+//   validation: string;
+// }
 
 const Home: NextPage = () => {
   const [data, setData] = useState({
@@ -23,7 +23,7 @@ const Home: NextPage = () => {
     url: "",
   });
 
-  const [slug, setSlug] = useState("");
+  // const [slug, setSlug] = useState("");
 
   const { mutateAsync } = trpc.link["create-link"].useMutation();
 
@@ -31,7 +31,7 @@ const Home: NextPage = () => {
 
   const {
     query: { error },
-    replace,
+    // replace,
   } = useRouter();
 
   const onSubmitHandler: FormEventHandler<HTMLFormElement> = async (e) => {
