@@ -139,7 +139,7 @@ const Home: NextPage = () => {
             }`}
           >
             <span className="text-rose-400">
-              {`${process.env.NEXT_PUBLIC_SITE_URL}/api/${
+              {`${process.env.NEXT_PUBLIC_SITE_URL?.substring(8)}/api/${
                 data.slug.length === 0 ? " [Slug] " : data.slug
               }`}
             </span>
