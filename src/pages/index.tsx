@@ -85,7 +85,7 @@ const Home: NextPage = () => {
       </Head>
       <Toaster />
       <main className="flex min-h-screen flex-col items-center justify-evenly bg-gradient-to-b from-[#2e026d] to-[#15162c] caret-rose-800">
-        <h1 className="mb-10 text-4xl font-semibold text-white">
+        <h1 className="mb-10 mt-3 text-5xl font-semibold text-white">
           Link Shortener
         </h1>
         <form
