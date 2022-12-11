@@ -23,12 +23,15 @@ const Home: NextPage = () => {
     url: "",
   });
 
+  const [slug, setSlug] = useState("");
+
   const { mutateAsync } = trpc.link["create-link"].useMutation();
 
   // get query params
 
   const {
     query: { error },
+    replace,
   } = useRouter();
 
   const onSubmitHandler: FormEventHandler<HTMLFormElement> = async (e) => {
@@ -40,6 +43,10 @@ const Home: NextPage = () => {
       });
       if (res.data) {
         toast.success(res.message);
+        setData({
+          slug: "",
+          url: "",
+        });
       }
     } catch (e_) {
       toast.error("Please Enter Valid Url Or Slug");
@@ -60,9 +67,9 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Toaster />
-      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
-        <h1 className="mb-14 text-4xl font-semibold text-white">
-          Link Shortner
+      <main className="flex min-h-screen flex-col items-center justify-evenly bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+        <h1 className="mb-10 text-4xl font-semibold text-white">
+          Link Shortener
         </h1>
         <form
           onSubmit={onSubmitHandler}
@@ -76,6 +83,7 @@ const Home: NextPage = () => {
                 url: d.url,
               }));
             }}
+            value={data.slug}
           />
           <Input
             placeholder="Url"
@@ -85,10 +93,25 @@ const Home: NextPage = () => {
                 slug: d.slug,
               }));
             }}
+            value={data.url}
           />
 
           <Button placeholder="Submit" type="submit" />
         </form>
+        {/* <div className="mt-14 flex gap-x-4">
+          <Input
+            placeholder="Enter Slug To Visit"
+            value={slug}
+            onChange={(e) => setSlug(e.target.value)}
+          />
+          <Button
+            placeholder="Visit"
+            onSubmit={async () => {
+              await fetch(`http://localhost:3000/api/${slug}`);
+            }}
+            type="button"
+          />
+        </div> */}
       </main>
     </>
   );

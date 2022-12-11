@@ -3,7 +3,7 @@ import React, { type FC } from "react";
 interface ButtonProps {
   placeholder: string;
   type: "submit" | "button" | "reset" | undefined;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSubmit?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const Button: FC<ButtonProps> = (props) => {
