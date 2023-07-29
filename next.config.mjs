@@ -12,5 +12,8 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+  async rewrites() {
+    return [{ source: "/l/:path*", destination: "/api/:path*" }];
+  },
 };
 export default config;

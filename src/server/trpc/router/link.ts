@@ -50,6 +50,20 @@ export const linkRouter = router({
       })
     )
     .mutation(async ({ ctx, input: { ref, slug } }) => {
+      const isLinkPresent = await ctx.prisma.link.findFirst({
+        where: {
+          slug,
+        },
+      });
+
+      if (isLinkPresent) {
+        return {
+          success: false,
+          data: isLinkPresent,
+          message: "Slug Already Present!",
+        };
+      }
+
       const link = await ctx.prisma.link.create({
         data: {
           ref,
@@ -60,6 +74,7 @@ export const linkRouter = router({
       return {
         data: link,
         message: "Created Successfully!",
+        success: true,
       };
     }),
 });

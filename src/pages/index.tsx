@@ -8,16 +8,6 @@ import Input from "../UI/Input";
 import { trpc } from "../utils/trpc";
 import ClipBoardSvg from "../UI/ClipBoardSvg";
 
-// interface MutationError {
-//   code: string;
-//   minimum: number;
-//   type: string;
-//   inclusive: boolean;
-//   message: string;
-//   path: string[];
-//   validation: string;
-// }
-
 const Home: NextPage = () => {
   const [data, setData] = useState({
     slug: "",
@@ -25,8 +15,6 @@ const Home: NextPage = () => {
   });
 
   const [recentSlug, setRecentSlug] = useState("");
-
-  // const [slug, setSlug] = useState("");
 
   const { mutateAsync } = trpc.link["create-link"].useMutation();
 
@@ -44,13 +32,15 @@ const Home: NextPage = () => {
         ref: data.url,
         slug: data.slug,
       });
-      if (res.data) {
+      if (res.success) {
         toast.success(res.message);
         setRecentSlug(data.slug);
         setData({
           slug: "",
           url: "",
         });
+      } else {
+        toast.error(res.message);
       }
     } catch (e_) {
       toast.error("Please Enter Valid Url Or Slug");
@@ -59,7 +49,7 @@ const Home: NextPage = () => {
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(
-      `${process.env.NEXT_PUBLIC_SITE_URL}/api/${
+      `${process.env.NEXT_PUBLIC_SITE_URL}/l/${
         recentSlug.length > 0
           ? recentSlug
           : data.slug.length > 0
@@ -134,12 +124,12 @@ const Home: NextPage = () => {
         <div className="text-center text-xs text-white">
           To Visit Use{" "}
           <a
-            href={`${process.env.NEXT_PUBLIC_SITE_URL}/api/${
+            href={`${process.env.NEXT_PUBLIC_SITE_URL}/l/${
               data.slug.length === 0 ? " [Slug] " : data.slug
             }`}
           >
             <span className="text-rose-400">
-              {`${process.env.NEXT_PUBLIC_SITE_URL?.substring(8)}/api/${
+              {`${process.env.NEXT_PUBLIC_SITE_URL?.substring(8)}/l/${
                 data.slug.length === 0 ? " [Slug] " : data.slug
               }`}
             </span>
